@@ -47,43 +47,43 @@ impl Formatter for GFMFormatter {
     fn start(
         &mut self,
         buffer: &mut String,
-        top_comments: &IndexMap<FlexStr, FlexStr>,
-        tables: &[&FlexStr],
+        _top_comments: &IndexMap<FlexStr, FlexStr>,
+        _tables: &[&FlexStr],
     ) {
         buffer.push_str("# Benchmarks\n\n");
-        buffer.push_str("## Table of Contents\n\n");
+        // buffer.push_str("## Table of Contents\n\n");
 
-        // Write each ToC entry in comments
-        for section_entry in top_comments.keys() {
-            Self::write_toc_entry(buffer, section_entry, false);
-        }
+        // // Write each ToC entry in comments
+        // for section_entry in top_comments.keys() {
+        //     Self::write_toc_entry(buffer, section_entry, false);
+        // }
 
-        Self::write_toc_entry(buffer, "Benchmark Results", false);
+        // Self::write_toc_entry(buffer, "Benchmark Results", false);
 
-        // Write each Benchmark ToC entry
-        for &table_entry in tables {
-            Self::write_toc_entry(buffer, table_entry, true);
-        }
+        // // Write each Benchmark ToC entry
+        // for &table_entry in tables {
+        //     Self::write_toc_entry(buffer, table_entry, true);
+        // }
 
-        buffer.push('\n');
+        // buffer.push('\n');
 
-        // Write out all the comment sections and comments
-        for (header, comment) in top_comments {
-            buffer.push_str("## ");
-            buffer.push_str(header);
-            buffer.push_str("\n\n");
-            buffer.push_str(comment);
-            buffer.push('\n');
-        }
+        // // Write out all the comment sections and comments
+        // for (header, comment) in top_comments {
+        //     buffer.push_str("## ");
+        //     buffer.push_str(header);
+        //     buffer.push_str("\n\n");
+        //     buffer.push_str(comment);
+        //     buffer.push('\n');
+        // }
 
-        buffer.push_str("## Benchmark Results\n\n");
+        // buffer.push_str("## Benchmark Results\n\n");
     }
 
-    fn end(&mut self, buffer: &mut String) {
-        buffer.push_str("---\n");
-        buffer.push_str("Made with [criterion-table](");
-        buffer.push_str(CT_URL);
-        buffer.push_str(")\n");
+    fn end(&mut self, _buffer: &mut String) {
+        // buffer.push_str("---\n");
+        // buffer.push_str("Made with [criterion-table](");
+        // buffer.push_str(CT_URL);
+        // buffer.push_str(")\n");
     }
 
     fn start_table(
