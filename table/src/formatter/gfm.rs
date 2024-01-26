@@ -9,7 +9,7 @@ const CT_URL: &str = "https://github.com/nu11ptr/criterion-table";
 const FIRST_COL_EXTRA_WIDTH: usize = "**``**".len();
 // Width of a single item in bold (italics is less) + one item in back ticks + one item in parens + one space
 // NOTE: Added one more "X" because we added unicode check, x, and rocket (uses only 1 per cell) that won't be 1 byte each
-const USED_EXTRA_WIDTH: usize = "() ``****XX".len();
+const USED_EXTRA_WIDTH: usize = 30;
 
 // *** GFM Formatter ***
 
@@ -170,24 +170,27 @@ impl Formatter for GFMFormatter {
         time: TimeUnit,
         compare: Comparison,
         max_width: usize,
+        cycles: u64,
     ) {
         let (time_str, speedup_str) = (time.to_flex_str(), compare.to_flex_str());
+        let khz = (cycles as f64) / time.as_picoseconds() * 1_000_000_000.0;
+        let khz_str = flex_fmt!("{khz:.2} kHz");
 
         // Allow 10% wiggle room to qualify
         let data = if compare >= 1.8 {
             // Positive = bold
-            flex_fmt!("`{time_str}` (🚀 **{speedup_str}**)")
+            flex_fmt!("`{time_str}` / `{khz_str}` (🚀 **{speedup_str}**)")
         // Allow 10% wiggle room to qualify
         } else if compare > 0.9 {
             // Positive = bold
-            flex_fmt!("`{time_str}` (✅ **{speedup_str}**)")
+            flex_fmt!("`{time_str}` / `{khz_str}` (✅ **{speedup_str}**)")
         // Allow 10% wiggle room
         } else if compare < 0.9 {
             // Negative = italics
-            flex_fmt!("`{time_str}` (❌ *{speedup_str}*)")
+            flex_fmt!("`{time_str}` / `{khz_str}` (❌ *{speedup_str}*)")
         } else {
             // Even = no special formatting
-            flex_fmt!("`{time_str}` ({speedup_str})")
+            flex_fmt!("`{time_str}` / `{khz_str}` ({speedup_str})")
         };
 
         buffer.push_str("| ");

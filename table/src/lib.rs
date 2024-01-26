@@ -537,6 +537,13 @@ impl CriterionTableData {
                     f.start_row(&mut buffer, &row.name, first_col.max_width);
 
                     for col in &col_info[1..] {
+                        let cycles = col
+                            .name
+                            .split("cycles=")
+                            .last()
+                            .unwrap()
+                            .parse::<u64>()
+                            .unwrap();
                         match row.column_data.get(&col.name) {
                             // Used column
                             Some(col_data) => f.used_column(
@@ -544,6 +551,7 @@ impl CriterionTableData {
                                 col_data.time_unit,
                                 col_data.pct,
                                 col.max_width,
+                                cycles,
                             ),
                             // Unused column
                             None => f.unused_column(&mut buffer, col.max_width),
@@ -610,6 +618,7 @@ pub trait Formatter {
         time: TimeUnit,
         compare: Comparison,
         max_width: usize,
+        cycles: u64,
     );
 
     /// Called for each column that is blank with the maximum display width of the the column
