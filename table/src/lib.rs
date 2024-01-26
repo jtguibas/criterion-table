@@ -537,13 +537,7 @@ impl CriterionTableData {
                     f.start_row(&mut buffer, &row.name, first_col.max_width);
 
                     for col in &col_info[1..] {
-                        let cycles = col
-                            .name
-                            .split("cycles=")
-                            .last()
-                            .unwrap()
-                            .parse::<u64>()
-                            .unwrap();
+                        let cycles = col.name.split(":").last().unwrap().parse::<u64>().unwrap();
                         match row.column_data.get(&col.name) {
                             // Used column
                             Some(col_data) => f.used_column(
